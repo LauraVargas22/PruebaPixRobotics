@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:i="http://www.w3.org/2001/XMLSchema-instance" z:Id="i1" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/" xmlns="http://schemas.datacontract.org/2004/07/BR.Logic">
+  <CompilationType>CSharp</CompilationType>
+  <Description>Nuevo script vacio.</Description>
+  <Id>0e88f0c6-567b-40b0-810f-b1b658b26d1c</Id>
+  <Logic z:Id="i2" i:type="ExecutedStep">
+    <Childs>
+      <AbstractStep z:Id="i3" i:type="CommentStep">
+        <Childs />
+        <Id>c8df2ad3-a7b3-4c69-9d8e-3caca7ebace6</Id>
+        <Parent z:Ref="i2" />
+        <PropertyValues />
+        <SelectedOptionId i:nil="true" />
+        <IsCollapsed>false</IsCollapsed>
+        <Text>Script para entregar el reporte a través de un formulario web</Text>
+      </AbstractStep>
+      <AbstractStep z:Id="i4" i:type="ExecutedStep">
+        <Childs />
+        <Id>d7941c9e-611c-4a55-9fb4-18db504eb1cb</Id>
+        <Parent z:Ref="i2" />
+        <PropertyValues>
+          <PropertyValue z:Id="i5">
+            <PropertyName>CSCode</PropertyName>
+            <_dataType>Value</_dataType>
+            <_expression i:nil="true" />
+            <_screenShotBase64 i:nil="true" />
+            <_value xmlns:d7p1="http://www.w3.org/2001/XMLSchema" i:type="d7p1:string">
+var folderReportes = @"C:\Users\USUARIO\Documents\Pix\PruebaTecnica\Reporte";
+var nameFileExcel = "Reporte_2025-08-23_115825.xlsx";
+var rutaArchivo = Path.Combine(folderReportes, nameFileExcel);
+
+var driver = new ChromeDriver();
+driver.Navigate().GoToUrl("https://form.jotform.com/251738143039053");
+
+// ✅ Subir archivo
+var fileInput = driver.FindElement(By.Id("input_9")); // Ajusta al id real
+fileInput.SendKeys(rutaArchivo);
+
+// ✅ Insertar texto en un campo
+var nombreInput = driver.FindElement(By.Id("input_5")); // Ajusta al id correcto
+nombreInput.SendKeys("Laura Vargas");
+
+// Insetar fecha
+var currentDate = DateTime.Now.ToString("MM-dd-yyyy");
+var fechaActual = driver.FindElement(By.Id("lite_mode_7"));
+fechaActual.SendKeys(currentDate);
+
+// Insertar mensaje
+var message = driver.FindElement(By.Id("input_8"));
+message.SendKeys("Reporte enviado automáticamente por RPA Pix Studio");
+
+//Enviar
+var button = driver.FindElement(By.Id("input_2"));
+((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", button);
+Thread.Sleep(500); // pequeña pausa
+button.Click();
+
+//Tomar Captura de Pantalla
+var folderEvidencias = @"C:\Users\USUARIO\Documents\Pix\PruebaTecnica\Evidencias";
+Directory.CreateDirectory(folderEvidencias);
+var nameScreenShot = $"Evidencia_{DateTime.Now.ToString("yyyy-MM-dd_HHmmss")}.png";
+var rutaEvidencias = Path.Combine(folderEvidencias, nameScreenShot);
+
+Screenshot captura = ((ITakesScreenshot)driver).GetScreenshot();
+byte[] bytes = captura.AsByteArray;
+File.WriteAllBytes(rutaEvidencias, bytes);
+</_value>
+            <_xpathSettings xmlns:d7p1="http://schemas.datacontract.org/2004/07/BR.XPath" i:nil="true" />
+          </PropertyValue>
+        </PropertyValues>
+        <SelectedOptionId i:nil="true" />
+        <AutoCloseMode>None</AutoCloseMode>
+        <EnableStatus>true</EnableStatus>
+        <ExceptionHandlingMode>Default</ExceptionHandlingMode>
+        <RetryCount>-1</RetryCount>
+        <Text>Ejecutar - Código para subir formulario Web</Text>
+        <_activityFullName>BR.Core.Base.ExecuteCSCode</_activityFullName>
+      </AbstractStep>
+      <AbstractStep z:Id="i6" i:type="ExecutedStep">
+        <Childs />
+        <Id>297a0a65-0781-495f-948c-ca0b831bcd84</Id>
+        <Parent z:Ref="i2" />
+        <PropertyValues>
+          <PropertyValue z:Id="i7">
+            <PropertyName>Text</PropertyName>
+            <_dataType>Expression</_dataType>
+            <_expression>"El reporte ha sido enviado exitosamente"</_expression>
+            <_screenShotBase64 i:nil="true" />
+            <_value i:nil="true" />
+            <_xpathSettings xmlns:d7p1="http://schemas.datacontract.org/2004/07/BR.XPath" i:nil="true" />
+          </PropertyValue>
+          <PropertyValue z:Id="i8">
+            <PropertyName>Timeout</PropertyName>
+            <_dataType>Expression</_dataType>
+            <_expression>5</_expression>
+            <_screenShotBase64 i:nil="true" />
+            <_value i:nil="true" />
+            <_xpathSettings xmlns:d7p1="http://schemas.datacontract.org/2004/07/BR.XPath" i:nil="true" />
+          </PropertyValue>
+        </PropertyValues>
+        <SelectedOptionId i:nil="true" />
+        <AutoCloseMode>None</AutoCloseMode>
+        <EnableStatus>true</EnableStatus>
+        <ExceptionHandlingMode>Default</ExceptionHandlingMode>
+        <RetryCount>-1</RetryCount>
+        <Text>Ventana de mensajes formulario exitoso</Text>
+        <_activityFullName>Activities.Interactive.MessageBox</_activityFullName>
+      </AbstractStep>
+      <AbstractStep z:Id="i9" i:type="ExecutedStep">
+        <Childs />
+        <Id>6ca66a7e-a6f6-4890-b078-81ddde5555ac</Id>
+        <Parent z:Ref="i2" />
+        <PropertyValues>
+          <PropertyValue z:Id="i10">
+            <PropertyName>Text</PropertyName>
+            <_dataType>Expression</_dataType>
+            <_expression>"El formulario web se ha enviado con el reporte de excel obtenido"</_expression>
+            <_screenShotBase64 i:nil="true" />
+            <_value i:nil="true" />
+            <_xpathSettings xmlns:d7p1="http://schemas.datacontract.org/2004/07/BR.XPath" i:nil="true" />
+          </PropertyValue>
+        </PropertyValues>
+        <SelectedOptionId i:nil="true" />
+        <AutoCloseMode>None</AutoCloseMode>
+        <EnableStatus>true</EnableStatus>
+        <ExceptionHandlingMode>Default</ExceptionHandlingMode>
+        <RetryCount>-1</RetryCount>
+        <Text>Escribir un log - Automatización Web</Text>
+        <_activityFullName>BR.Core.Base.WriteLog</_activityFullName>
+      </AbstractStep>
+    </Childs>
+    <Id>50f00c69-217d-496d-a80e-9073ef0713d8</Id>
+    <Parent i:nil="true" />
+    <PropertyValues />
+    <SelectedOptionId i:nil="true" />
+    <AutoCloseMode>None</AutoCloseMode>
+    <EnableStatus>true</EnableStatus>
+    <ExceptionHandlingMode>Default</ExceptionHandlingMode>
+    <RetryCount>-1</RetryCount>
+    <Text></Text>
+    <_activityFullName>BR.Core.Base.Container</_activityFullName>
+  </Logic>
+  <Name>AutomatizacionWeb.pix</Name>
+  <Namespaces xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <Params />
+  <PlatformVersion xmlns:d2p1="http://schemas.datacontract.org/2004/07/System">
+    <d2p1:_Build>3</d2p1:_Build>
+    <d2p1:_Major>2</d2p1:_Major>
+    <d2p1:_Minor>27</d2p1:_Minor>
+    <d2p1:_Revision>0</d2p1:_Revision>
+  </PlatformVersion>
+  <TemplateVersion xmlns:d2p1="http://schemas.datacontract.org/2004/07/System" i:nil="true" />
+  <Variables xmlns:d2p1="http://schemas.datacontract.org/2004/07/BR.Logic.Params" />
+  <Version i:nil="true" />
+</Script>
